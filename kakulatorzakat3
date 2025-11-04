@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTS Logika Matematika</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 40px;
+    }
+    h1 {
+      color: #007bff;
+    }
+    .info {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    input {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #hasil {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+    .penjelasan {
+      background-color: #fff3cd;
+      padding: 15px;
+      border-left: 6px solid #ffc107;
+      border-radius: 6px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+<body>
+  <h1>UTS Logika Matematika</h1>
+
+  <div class="info">
+    <p><b>NIM:</b> 230401010</p>
+    <p><b>Nama:</b> Arya Rizky Ramadhani</p>
+    <p><b>Kelas:</b> TI-2B</p>
+    <p><b>Dosen:</b> Ibu Siti Nuraini, S.Kom</p>
+    <p><b>Kampus:</b> Universitas Teknologi Nusantara</p>
+  </div>
+
+  <h3>Pengecekan Kewajiban Zakat Emas</h3>
+
+  <!-- Checkbox untuk mengaktifkan input emas -->
+  <label>
+    <input type="checkbox" id="chkEmas" onclick="aturInputEmas()"> 
+    Jumlah Emas:
+  </label>
+  <input type="number" id="emas" value="0" disabled> gram<br>
+
+  <label>Lama Kepemilikan (haul, tahun): </label>
+  <input type="number" id="haul" placeholder="Masukkan lama kepemilikan"><br><br>
+  
+  <button onclick="cekZakat()">Cek Zakat</button>
+
+  <p id="hasil"></p>
+
+  <!-- Paragraf penjelasan hukum logika -->
+  <div class="penjelasan">
+    <p><b>Hukum logika pada perhitungan zakat di atas yaitu hukum konjungsi (AND) dan hukum negasi (NOT).</b>  
+    Hukum konjungsi digunakan karena keputusan “Wajib Zakat” hanya berlaku jika <i>dua kondisi</i> benar sekaligus, yaitu jumlah emas ≥ 85 gram <b>dan</b> lama kepemilikan ≥ 1 tahun.  
+    Sedangkan hukum negasi (NOT) berlaku untuk kebalikannya, yaitu jika salah satu kondisi tidak terpenuhi, maka hasilnya menjadi “Tidak Wajib Zakat”.  
+    Dengan demikian, perhitungan ini menerapkan logika dasar dalam bentuk <b>(A ∧ B)</b> untuk menghasilkan keputusan akhir.</p>
+  </div>
+
+  <script>
+    function aturInputEmas() {
+      let chk = document.getElementById("chkEmas");
+      let emas = document.getElementById("emas");
+
+      if (chk.checked) {
+        emas.disabled = false;
+        emas.value = "";
+        emas.focus();
+      } else {
+        emas.disabled = true;
+        emas.value = 0;
+      }
+    }
+
+    function cekZakat() {
+      let emas = parseFloat(document.getElementById("emas").value);
+      let haul = parseFloat(document.getElementById("haul").value);
+      let hasil = document.getElementById("hasil");
+
+      // Logika dasar menggunakan operator AND (&&)
+      if (emas >= 85 && haul >= 1) {
+        hasil.textContent = "Wajib Zakat";
+        hasil.style.color = "green";
+      } else {
+        hasil.textContent = "Tidak Wajib Zakat";
+        hasil.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

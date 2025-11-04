@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTS Logika Matematika</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 40px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #007bff;
+    }
+    .info {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    input, select {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #hasil {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+    #argumen {
+      margin-top: 10px;
+      font-style: italic;
+    }
+    .penjelasan {
+      background-color: #fff3cd;
+      padding: 15px;
+      border-left: 6px solid #ffc107;
+      border-radius: 6px;
+      margin-top: 25px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>UTS Logika Matematika</h1>
+
+  <div class="info">
+    <p><b>NIM:</b> 256512018</p>
+    <p><b>Nama:</b> Arya Rizky Ramadhani</p>
+    <p><b>Dosen:</b> bapak iin solihin, S.Kom</p>
+    <p><b>Kampus:</b> MA'SOEM UNIVERSITY</p>
+  </div>
+
+  <h3>Pengecekan Kewajiban Zakat</h3>
+
+  <label for="jenisZakat">Pilih jenis zakat: </label>
+  <select id="jenisZakat" onchange="toggleInputEmas()">
+    <option value="emas">Zakat Emas</option>
+    <option value="pertanian">Zakat Pertanian</option>
+    <option value="penghasilan">Zakat Penghasilan</option>
+  </select><br><br>
+
+  <div id="inputEmasContainer">
+    <label>Jumlah emas:</label>
+    <input type="number" id="emas" value="0" min="0"> gram<br>
+  </div>
+
+  <label for="haul">Lama Kepemilikan (haul, tahun):</label>
+  <input type="number" id="haul" placeholder="Masukkan lama kepemilikan" min="0"><br><br>
+
+  <button onclick="cekZakat()">Cek Zakat</button>
+
+  <p id="hasil"></p>
+  <p id="argumen"></p>
+
+  <div class="penjelasan" id="penjelasan">
+    <p><b>Hukum logika pada perhitungan zakat di atas yaitu hukum konjungsi (AND) dan hukum negasi (NOT).</b>  
+    Hukum konjungsi digunakan karena keputusan “Wajib Zakat” hanya berlaku jika dua kondisi benar sekaligus, yaitu jumlah emas ≥ 85 gram <b>dan</b> lama kepemilikan ≥ 1 tahun.  
+    Sedangkan hukum negasi (NOT) digunakan untuk kondisi sebaliknya: jika salah satu tidak terpenuhi, maka hasilnya menjadi “Tidak Wajib Zakat”.</p>
+  </div>
+
+  <script>
+    // Fungsi untuk menampilkan/menyembunyikan input emas
+    function toggleInputEmas() {
+      let jenis = document.getElementById("jenisZakat").value;
+      let container = document.getElementById("inputEmasContainer");
+      if (jenis === "emas") {
+        container.classList.remove("hidden");
+      } else {
+        container.classList.add("hidden");
+      }
+    }
+
+    window.onload = toggleInputEmas; // Inisialisasi saat halaman dimuat
+
+    function cekZakat() {
+      let jenis = document.getElementById("jenisZakat").value;
+      let emas = 0;
+      if (jenis === "emas") {
+        emas = parseFloat(document.getElementById("emas").value) || 0;
+      }
+      let haul = parseFloat(document.getElementById("haul").value);
+      let hasil = document.getElementById("hasil");
+      let argumen = document.getElementById("argumen");
+      let penjelasan = document.getElementById("penjelasan");
+
+      // Validasi input
+      if (isNaN(haul) || haul < 0) {
+        hasil.textContent = "Mohon isi lama kepemilikan (haul) dengan angka yang benar.";
+        hasil.style.color = "red";
+        argumen.textContent = "";
+        penjelasan.innerHTML = "";
+        return;
+      }
+
+      // Zakat EMAS
+      if (jenis === "emas") {
+        if (isNaN(emas) || emas < 0) {
+          hasil.textContent = "Mohon isi jumlah emas dengan angka yang benar.";
+          hasil.style.color = "red";
+          argumen.textContent = "";
+          penjelasan.innerHTML = "";
+          return;
+        }
+
+        if (emas >= 85 && haul >= 1) {
+          hasil.textContent = "Wajib Zakat Emas";
+          hasil.style.color = "green";
+          argumen.textContent = `Anda wajib zakat karena memiliki ${emas} gram emas selama ${haul} tahun.`;
+        } else {
+          hasil.textContent = "Tidak Wajib Zakat Emas";
+          hasil.style.color = "red";
+          if (emas < 85 && haul < 1) {
+            argumen.textContent = `Anda belum wajib zakat karena emas hanya ${emas} gram dan belum mencapai haul (baru ${haul} tahun).`;
+          } else if (emas < 85) {
+            argumen.textContent = `Anda belum wajib zakat karena jumlah emas hanya ${emas} gram (kurang dari nisab 85 gram).`;
+          } else {
+            argumen.textContent = `Anda belum wajib zakat karena lama kepemilikan baru ${haul} tahun (belum mencapai 1 tahun).`;
+          }
+        }
+
+        penjelasan.innerHTML = `<p><b>Hukum logika:</b> Konjungsi (AND) dan Negasi (NOT).<br>
+        Kewajiban zakat emas hanya berlaku jika <b>dua kondisi benar sekaligus</b>: emas ≥ 85 gram <b>DAN</b> haul ≥ 1 tahun.</p>`;
+
+      // Zakat PERTANIAN
+      } else if (jenis === "pertanian") {
+        if (haul >= 0.5) {
+          hasil.textContent = "Wajib Zakat Pertanian";
+          hasil.style.color = "green";
+          argumen.textContent = `Anda wajib zakat karena hasil pertanian telah melewati siklus ${haul} tahun (diasumsikan nisab terpenuhi).`;
+        } else {
+          hasil.textContent = "Tidak Wajib Zakat Pertanian";
+          hasil.style.color = "red";
+          argumen.textContent = "Anda belum wajib zakat karena hasil pertanian belum mencapai siklus panen (0.5 tahun) atau nisab tidak terpenuhi.";
+        }
+
+        penjelasan.innerHTML = `<p><b>Hukum logika:</b> Disjungsi (OR).<br>
+        Kewajiban zakat pertanian muncul dari kondisi yang berbeda-beda (misalnya hasil panen melebihi nisab <b>ATAU</b> sistem irigasi tertentu), sehingga menggunakan logika OR.</p>`;
+
+      // Zakat PENGHASILAN
+      } else if (jenis === "penghasilan") {
+        if (haul >= 1) {
+          hasil.textContent = "Wajib Zakat Penghasilan";
+          hasil.style.color = "green";
+          argumen.textContent = `Anda wajib zakat penghasilan karena telah bekerja selama ${haul} tahun dan memenuhi nisab penghasilan.`;
+        } else {
+          hasil.textContent = "Tidak Wajib Zakat Penghasilan";
+          hasil.style.color = "red";
+          argumen.textContent = `Anda belum wajib zakat penghasilan karena belum mencapai haul 1 tahun kerja atau nisab belum terpenuhi.`;
+        }
+
+        penjelasan.innerHTML = `<p><b>Hukum logika:</b> Implikasi (IF...THEN).<br>
+        Jika penghasilan telah mencapai nisab <b>DAN</b> haul ≥ 1 tahun, maka <b>wajib zakat</b>. Ini merupakan penerapan logika implikasi (syarat → hasil).</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
